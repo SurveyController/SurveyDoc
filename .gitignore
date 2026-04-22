@@ -1,0 +1,15 @@
+# dependencies
+node_modules/
+
+# VitePress build output and cache
+.vitepress/dist/
+.vitepress/cache/
+
+# common temporary files
+*.log
+.DS_Store
+Thumbs.db
+
+# editor and OS files
+.vscode/
+.idea/
