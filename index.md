@@ -3,23 +3,23 @@
 layout: home
 
 hero:
-  name: "SurveyController 文档"
-  text: "A VitePress Site"
-  tagline: My great project tagline
+  name: "SurveyController"
+  text: ""
+  tagline: "一站式问卷自动化处理程序，适配问卷星与腾讯问卷平台"
   actions:
     - theme: brand
-      text: Markdown Examples
+      text: 查看文档
       link: /markdown-examples
     - theme: alt
-      text: API Examples
-      link: /api-examples
+      text: 下载最新版本
+      link: https://dl.hungrym0.top/SurveyController_latest_setup.exe
 
 features:
-  - title: Feature A
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature B
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature C
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+  - title: 支持二维码解析
+    details: 对于问卷星平台的问卷二维码，自动解析成url链接
+  - title: 定制答案配置
+    details: 支持自定义选项作答比例，自定义目标信度系数（仅针对量表题型）
+  - title: 指定作答ip
+    details: 可选择指定地区或随机处理作答ip地址
 ---
 
