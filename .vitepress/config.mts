@@ -2,7 +2,7 @@ import { defineConfig } from 'vitepress'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  base: '/SurveyDoc/',
+  base: '/',
   title: "SurveyController 文档",
   description: "A VitePress Site",
   themeConfig: {
