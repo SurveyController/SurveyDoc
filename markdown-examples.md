@@ -4,7 +4,7 @@
 
 ## 语法高亮
 
-VitePress 使用 [Shiki](https://github.com/shikijs/shiki) 提供语法高亮，并支持行高亮等额外功能：
+VitePress 使用 [Shiki](https://github.com/shikijs/shiki) 提供，并支持行高亮等额外功能：
 
 ## 自定义容器
 
