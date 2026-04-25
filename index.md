@@ -5,7 +5,7 @@ layout: home
 hero:
   name: "SurveyController"
   text: ""
-  tagline: "一站式问卷自动化处理程序，适配问卷星与腾讯问卷平台"
+  tagline: "一站式问卷自动化处理程序，适配问卷星、腾讯问卷、Credamo 见数平台"
   actions:
     - theme: brand
       text: 查看文档
@@ -16,7 +16,7 @@ hero:
 
 features:
   - title: 支持二维码解析
-    details: 对于问卷星平台的问卷二维码，自动解析成url链接
+    details: 对于问卷星、腾讯问卷、Credamo 见数平台的问卷二维码，自动解析成url链接
   - title: 定制答案配置
     details: 支持自定义选项作答比例，自定义目标信度系数（仅针对量表题型）
   - title: 指定作答ip
