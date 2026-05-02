@@ -56,7 +56,7 @@ npm run docs:preview
 
 ## 文档
 
-访问 [http://localhost:5173](http://localhost:5173) 查看本地文档站点。
+本地文档站点地址：`http://localhost:5173`
 
 ## 许可证
 
