@@ -16,8 +16,8 @@ export default defineConfig({
       {
         text: '示例',
         items: [
-          { text: 'Markdown 示例', link: '/markdown-examples' },
-          { text: '运行时 API 示例', link: '/api-examples' }
+          { text: '下载与安装', link: '/download-install' },
+          { text: '使用说明', link: '/usage-guide' }
         ]
       }
     ],
