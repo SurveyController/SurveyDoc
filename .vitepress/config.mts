@@ -17,7 +17,8 @@ export default defineConfig({
         text: '示例',
         items: [
           { text: '下载与安装', link: '/download-install' },
-          { text: '使用说明', link: '/usage-guide' }
+          { text: '使用说明', link: '/usage-guide' },
+          { text: 'API Key配置', link: '/api-key-configuration' }
         ]
       }
     ],
