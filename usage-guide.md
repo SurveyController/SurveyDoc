@@ -2,38 +2,37 @@
 outline: deep
 ---
 
-# 运行时 API 示例
+# 使用说明
 
-本页演示了 VitePress 提供的一些运行时 API 用法。
+本页演示了SurveyController导入问卷以及进入配置向导的具体详细操作流程，以及一些常见问题的解决方法。
 
-主要的 `useData()` API 可用于获取当前页面的站点、主题和页面数据，它在 `.md` 和 `.vue` 文件中都可以使用：
+## 导入问卷
 
-```md
-<script setup>
-import { useData } from 'vitepress'
+打开程序后，你可以直接粘贴问卷链接或拖拽二维码图片到对话框中.或点击左边“上传问卷二维码图片”从文件中导入二维码，当然也可以直接自动配置问卷。
 
-const { theme, page, frontmatter } = useData()
-</script>
+（二维码图片最好清晰一点，别糊成马赛克。）
 
-## 结果
+![安装](assets/gui_1.png)
 
-### 主题数据
-<pre>{{ theme }}</pre>
+## 进入配置向导
 
-### 页面数据
-<pre>{{ page }}</pre>
+图片识别成功后，程序会自动跳到配置向导。
 
-### 页面 Frontmatter
-<pre>{{ frontmatter }}</pre>
-```
+![安装](assets/gui_2.png)
 
-<script setup>
-import { useData } from 'vitepress'
+### 问题检查
 
-const { site, theme, page, frontmatter } = useData()
-</script>
+如果识别没反应，先检查你传的是不是问卷二维码，而不是投票、考试，或者封面花里胡哨绣了几朵花之后塞个小二维码的抽象艺术。
 
-## 结果
+右上角的“配置列表 / 载入配置 / 保存配置”是给你存档和复用配置用的。配置列表里暂时空白很正
+常，说明你还没保存过。
+
+![安装](assets/gui_3.png)
+
+## 配置向导怎么用
+
+问卷信息可以根据自己的需要修改，设置完成后点击“保存”即可跳转到配置好的问卷份数设置。
+
 
 ### 主题数据
 <pre>{{ theme }}</pre>
