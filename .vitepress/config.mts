@@ -17,15 +17,23 @@ export default defineConfig({
 
     sidebar: [
       {
-        text: '示例',
+        text: '使用前准备：',
         items: [
           { text: '下载与安装', link: '/download-install' },
-          { text: '如何提问', link: '/how-to-ask' },
-          { text: '使用说明', link: '/usage-guide' },
+          { text: '如何提问', link: '/how-to-ask' }
+        ]
+      },
+      {
+        text: '使用过程：',
+        items: [
+          { text: '载入问卷', link: '/upload' },
+          { text: '选项比例的配置', link: '/questions' },
+          { text: '运行参数', link: '/runtime' },
           { text: 'API Key 配置', link: '/api-key-configuration' }
         ]
       }
     ],
+
 
     socialLinks: [
       { icon: 'github', link: 'https://github.com/hungryM0/SurveyController' }
