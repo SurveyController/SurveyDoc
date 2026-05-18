@@ -29,6 +29,7 @@ export default defineConfig({
           { text: '载入问卷', link: '/upload' },
           { text: '选项比例的配置', link: '/questions' },
           { text: '运行参数', link: '/runtime' },
+          { text: '随机 IP 与随机 UA', link: '/random' },
           { text: 'API Key 配置', link: '/api-key-configuration' }
         ]
       }
