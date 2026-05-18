@@ -1,3 +1,7 @@
+---
+outline: deep
+---
+
 # API Key 配置
 
 ## 以 DeepSeek 为例，拿 Key 的流程：

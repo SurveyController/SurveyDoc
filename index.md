@@ -3,9 +3,12 @@
 layout: home
 
 hero:
-  name: "SurveyController"
+  name: SurveyController
   text: ""
-  tagline: '一站式问卷自动化处理程序，适配问卷星、腾讯问卷、Credamo见数平台'
+  tagline: 一站式问卷自动化处理程序，适配问卷星、腾讯问卷、Credamo见数平台
+  image:
+    src: /assets/icon.png
+    alt: SurveyController 图标
   actions:
     - theme: brand
       text: 查看文档

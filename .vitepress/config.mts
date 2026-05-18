@@ -5,11 +5,14 @@ export default defineConfig({
   base: '/',
   title: "SurveyController",
   description: "基于 VitePress 的文档站点",
+  head: [
+    ['link', { rel: 'icon', href: '/assets/icon.ico' }]
+  ],
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: '首页', link: '/' },
-      { text: '示例', link: '/markdown-examples' }
+      { text: '状态监测', link: 'https://status.hungrym0.top/status/surveycontroller' }
     ],
 
     sidebar: [
@@ -17,8 +20,9 @@ export default defineConfig({
         text: '示例',
         items: [
           { text: '下载与安装', link: '/download-install' },
+          { text: '如何提问', link: '/how-to-ask' },
           { text: '使用说明', link: '/usage-guide' },
-          { text: 'API Key配置', link: '/api-key-configuration' }
+          { text: 'API Key 配置', link: '/api-key-configuration' }
         ]
       }
     ],

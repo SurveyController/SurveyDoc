@@ -1,0 +1,67 @@
+:root {
+  --vp-home-hero-name-color: var(--vp-c-brand-1);
+}
+
+.VPHero.has-image .container {
+  text-align: left !important;
+}
+
+.VPHero.has-image .name,
+.VPHero.has-image .text,
+.VPHero.has-image .tagline {
+  margin: 0 !important;
+}
+
+.VPHero.has-image .actions {
+  justify-content: flex-start !important;
+}
+
+@media (min-width: 960px) {
+  .VPHero .container {
+    justify-content: flex-start !important;
+  }
+
+  .VPHero .main {
+    order: 2 !important;
+    flex-grow: 0 !important;
+  }
+
+  .VPHero .image {
+    order: 1 !important;
+    flex-grow: 0 !important;
+    margin: 0 48px 0 0 !important;
+  }
+
+  .VPHero .image-container {
+    width: 220px !important;
+    height: 220px !important;
+    transform: none !important;
+  }
+
+  .VPHero .image-bg {
+    width: 160px !important;
+    height: 160px !important;
+  }
+
+  .VPHero .image-src {
+    max-width: 160px !important;
+    max-height: 160px !important;
+  }
+}
+
+@media (max-width: 959px) {
+  .VPHero .image-container {
+    width: 180px !important;
+    height: 180px !important;
+  }
+
+  .VPHero .image-bg {
+    width: 132px !important;
+    height: 132px !important;
+  }
+
+  .VPHero .image-src {
+    max-width: 132px !important;
+    max-height: 132px !important;
+  }
+}
