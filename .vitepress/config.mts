@@ -17,14 +17,14 @@ export default defineConfig({
 
     sidebar: [
       {
-        text: '使用前准备：',
+        text: '使用前准备',
         items: [
           { text: '下载与安装', link: '/download-install' },
           { text: '如何提问', link: '/how-to-ask' }
         ]
       },
       {
-        text: '使用过程：',
+        text: '使用过程',
         items: [
           { text: '载入问卷', link: '/upload' },
           { text: '选项比例的配置', link: '/questions' },

@@ -13,4 +13,5 @@ Thumbs.db
 # editor and OS files
 .vscode/
 .idea/
+*.code-workspace
 desktop.ini
