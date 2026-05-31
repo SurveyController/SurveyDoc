@@ -1,8 +1,8 @@
 # 随机 IP 与随机 UA
 
-此处设置项的重要程度等同于 [运行参数](runtime.md)，需要仔细阅读！
+此处设置项的重要程度等同于 [运行参数](./runtime.md)，需要仔细阅读！
 
-![随机IP和随机UA设置](assets/random_1.png)
+![随机IP和随机UA设置](../assets/random_1.png)
 
 ## 随机 IP
 

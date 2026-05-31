@@ -12,7 +12,7 @@ hero:
   actions:
     - theme: brand
       text: 查看文档
-      link: /download-install
+      link: /guide/download-install
     - theme: alt
       text: 下载最新版本
       link: https://dl.hungrym0.top/SurveyController_latest_setup.exe

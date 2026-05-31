@@ -16,11 +16,11 @@ outline: deep
 
 - 给你的 Key 起一个名字，方便区分用途。注意 Key 的名称仅仅是为了给它打一个标签，并不是 Key 的实际值
 
-![DeepSeek API Key 入口](assets/apikey_1.png)
+![DeepSeek API Key 入口](../assets/apikey_1.png)
 
-![创建 API Key 名称](assets/apikey_2.png)
+![创建 API Key 名称](../assets/apikey_2.png)
 
-![复制 sk 开头的 API Key](assets/apikey_3.png)
+![复制 sk 开头的 API Key](../assets/apikey_3.png)
 
 > 这个以 sk- 开头的字符串就是需要使用到的 Key 值。
 >
@@ -38,7 +38,7 @@ outline: deep
 
 > 💡提示：1 块钱大约能让`deepseek-v4-flash`模型作答1.6万~2.4万道填空题
 
-![账户余额提示](assets/apikey_4.png)
+![账户余额提示](../assets/apikey_4.png)
 
 ## 模型名称
 
