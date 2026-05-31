@@ -4,7 +4,7 @@ outline: deep
 
 # SDK
 
-这里说明如何用 [SurveyCore](https://github.com/SurvyeController/SurveyCore) 来创建和管理问卷提交任务。
+这里说明如何用 [SurveyCore](https://github.com/SurveyController/SurveyCore) 来创建和管理问卷提交任务。
 
 ## 文档结构
 
