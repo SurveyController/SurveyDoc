@@ -51,11 +51,14 @@ Accept: application/json
 
 ```json
 {
-  "error": "错误原因"
+  "error": "错误原因",
+  "code": "validation_error",
+  "message": "错误原因",
+  "detail": "调试详情"
 }
 ```
 
-当前版本没有独立的业务错误码字段。错误处理以 HTTP 状态码为准。
+客户端应优先看 HTTP 状态码和 `code`。
 
 ## 推荐接入流程
 

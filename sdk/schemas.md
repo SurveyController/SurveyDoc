@@ -20,28 +20,11 @@ outline: deep
 | `submit_interval` | `[number, number]` | 两次提交之间的随机等待范围，单位秒。 |
 | `answer_duration` | `[number, number]` | 单份问卷显示作答时长范围，单位秒。 |
 | `answer_datetime_window` | `[string, string]` | 作答时间窗口，格式建议为 `YYYY-MM-DD HH:mm:ss`。 |
-| `random_ip_enabled` | `boolean` | 是否启用随机代理 IP。 |
-| `proxy_source` | `string` | 代理来源。默认 `default`。 |
-| `custom_proxy_api` | `string` | 自定义代理 API。 |
-| `proxy_area_code` | `string \| null` | 代理地区编码。 |
-| `random_ip_user_id` | `number` | 默认代理源的用户 ID。 |
-| `random_ip_device_id` | `string` | 默认代理源的设备 ID。 |
-| `ip_extract_endpoint` | `string` | 代理提取接口。 |
-| `random_ip_lease_minute` | `number` | 代理租约分钟数。 |
 | `random_ua_enabled` | `boolean` | 是否启用随机 User-Agent。 |
 | `random_ua_keys` | `string[]` | User-Agent 类型。默认 `wechat`、`mobile`、`pc`。 |
 | `random_ua_ratios` | `object` | User-Agent 类型权重。 |
-| `fail_stop_enabled` | `boolean` | 是否在失败过多时停止。 |
-| `pause_on_aliyun_captcha` | `boolean` | 遇到阿里云验证码时是否暂停。 |
 | `reliability_mode_enabled` | `boolean` | 是否启用信度优化。 |
 | `psycho_target_alpha` | `number` | 预期 Cronbach's α。默认 `0.85`。 |
-| `ai_mode` | `string` | AI 填空模式。默认 `free`。 |
-| `ai_provider` | `string` | AI 服务商。默认 `deepseek`。 |
-| `ai_api_key` | `string` | AI API Key。 |
-| `ai_base_url` | `string` | AI 接口地址。 |
-| `ai_api_protocol` | `string` | AI 协议。默认 `auto`。 |
-| `ai_model` | `string` | AI 模型名。 |
-| `ai_system_prompt` | `string` | AI 系统提示词。 |
 | `reverse_fill_enabled` | `boolean` | 是否启用反向填充。 |
 | `reverse_fill_source_path` | `string` | 反向填充数据源路径。 |
 | `reverse_fill_format` | `string` | 反向填充格式。默认 `auto`。 |
@@ -70,9 +53,9 @@ outline: deep
 | `survey_provider` | `string` | 问卷平台。 |
 | `provider_question_id` | `string` | 平台原始题目 ID。 |
 | `provider_page_id` | `string` | 平台原始分页 ID。 |
-| `ai_enabled` | `boolean` | 该填空题是否启用 AI。 |
+| `ai_enabled` | `boolean` | 是否让服务端用本地 AI 配置生成填空答案。 |
 | `multi_text_blank_modes` | `string[]` | 多项填空每个空的生成模式。 |
-| `multi_text_blank_ai_flags` | `boolean[]` | 多项填空每个空是否启用 AI。 |
+| `multi_text_blank_ai_flags` | `boolean[]` | 多项填空每个空是否启用服务端 AI。 |
 | `multi_text_blank_int_ranges` | `number[][]` | 多项填空随机整数范围。 |
 | `text_random_mode` | `string` | 填空随机模式。可选值：`none`、`name`、`mobile`、`id_card`、`integer`。 |
 | `text_random_int_range` | `[number, number]` | 随机整数范围。 |
