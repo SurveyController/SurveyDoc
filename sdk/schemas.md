@@ -23,6 +23,14 @@ outline: deep
 | `random_ua_enabled` | `boolean` | 是否启用随机 User-Agent。 |
 | `random_ua_keys` | `string[]` | User-Agent 类型。默认 `wechat`、`mobile`、`pc`。 |
 | `random_ua_ratios` | `object` | User-Agent 类型权重。 |
+| `random_ip_enabled` | `boolean` | 是否启用随机 IP。启用后只在提交前取用代理。 |
+| `proxy_source` | `string` | 代理来源。可选值：`default`、`benefit`、`custom`。 |
+| `custom_proxy_api` | `string` | 自定义代理 API 地址。`proxy_source` 为 `custom` 时使用。 |
+| `proxy_area_code` | `string` | 官方随机 IP 地区编码。 |
+| `random_ip_user_id` | `number` | 官方随机 IP 用户 ID。 |
+| `random_ip_device_id` | `string` | 官方随机 IP 设备 ID。 |
+| `ip_extract_endpoint` | `string` | 官方随机 IP 提取接口覆盖地址。 |
+| `random_ip_lease_minute` | `number` | 官方随机 IP 租约分钟数。默认 `1`。 |
 | `reliability_mode_enabled` | `boolean` | 是否启用信度优化。 |
 | `psycho_target_alpha` | `number` | 预期 Cronbach's α。默认 `0.85`。 |
 | `reverse_fill_enabled` | `boolean` | 是否启用反向填充。 |
