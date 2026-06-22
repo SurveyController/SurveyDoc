@@ -15,7 +15,7 @@ hero:
       link: /guide/download-install
     - theme: alt
       text: 下载最新版本
-      link: https://dl.hungrym0.top/SurveyController_latest_setup.exe
+      link: https://dl.hungrym0.com/SurveyController_latest_setup.exe
 
 features:
   - title: 支持二维码解析

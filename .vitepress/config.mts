@@ -14,6 +14,7 @@ export default defineConfig({
     nav: [
       { text: '首页', link: '/' },
       { text: 'API 文档', link: '/sdk/index' },
+      { text: '参与文档编写', link: 'https://github.com/SurveyController/SurveyDoc'}
       { text: '状态监测', link: 'https://status.hungrym0.top/status/surveycontroller' }
     ],
 
