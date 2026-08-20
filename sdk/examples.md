@@ -7,40 +7,40 @@ outline: deep
 ## JavaScript
 
 ```js
-const baseURL = "http://localhost:19178";
+const baseURL = "http://127.0.0.1:19178/api/v1";
 
 async function requestJSON(path, options = {}) {
   const response = await fetch(`${baseURL}${path}`, options);
   const data = await response.json();
 
   if (!response.ok) {
-    throw new Error(data.error || `HTTP ${response.status}`);
+    throw new Error(data.message || `HTTP ${response.status}`);
   }
 
   return data;
 }
 
 async function createTaskFromURL(url) {
-  const config = await requestJSON("/api/configs", {
+  const config = await requestJSON("/configs", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ url })
   });
 
-  config.target = 10;
-  config.threads = 2;
+  config.execution.target = 10;
+  config.execution.threads = 2;
 
-  const task = await requestJSON("/api/tasks", {
+  const task = await requestJSON("/tasks", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(config)
   });
 
-  return task.task_id;
+  return task.id;
 }
 
 async function getTask(taskID) {
-  return requestJSON(`/api/tasks/${taskID}`);
+  return requestJSON(`/tasks/${taskID}`);
 }
 ```
 
@@ -49,7 +49,7 @@ async function getTask(taskID) {
 ```python
 import requests
 
-base_url = "http://localhost:19178"
+base_url = "http://127.0.0.1:19178/api/v1"
 
 
 def request_json(method, path, **kwargs):
@@ -57,43 +57,41 @@ def request_json(method, path, **kwargs):
     data = response.json()
 
     if not response.ok:
-        raise RuntimeError(data.get("error") or f"HTTP {response.status_code}")
+        raise RuntimeError(data.get("message") or f"HTTP {response.status_code}")
 
     return data
 
 
 config = request_json(
     "POST",
-    "/api/configs",
+    "/configs",
     json={"url": "https://www.wjx.cn/vm/example.aspx"},
 )
 
-config["target"] = 10
-config["threads"] = 2
+config["execution"]["target"] = 10
+config["execution"]["threads"] = 2
 
-task = request_json("POST", "/api/tasks", json=config)
-task_id = task["task_id"]
-
-print(task_id)
+task = request_json("POST", "/tasks", json=config)
+print(task["id"])
 ```
 
 ## 上传二维码
 
-JavaScript 浏览器环境：
+JavaScript：
 
 ```js
 async function decodeQRCode(file) {
   const form = new FormData();
-  form.append("image", file);
+  form.append("file", file);
 
-  const response = await fetch("http://localhost:19178/api/qrcode/decode", {
+  const response = await fetch("http://127.0.0.1:19178/api/v1/qrcode/decode", {
     method: "POST",
     body: form
   });
 
   const data = await response.json();
   if (!response.ok) {
-    throw new Error(data.error || "二维码解析失败");
+    throw new Error(data.message || "二维码解析失败");
   }
 
   return data.url;
@@ -107,14 +105,14 @@ import requests
 
 with open("D:/Downloads/survey-qrcode.png", "rb") as image:
     response = requests.post(
-        "http://localhost:19178/api/qrcode/decode",
-        files={"image": image},
+        "http://127.0.0.1:19178/api/v1/qrcode/decode",
+        files={"file": image},
         timeout=30,
     )
 
 data = response.json()
 if not response.ok:
-    raise RuntimeError(data.get("error") or "二维码解析失败")
+    raise RuntimeError(data.get("message") or "二维码解析失败")
 
 print(data["url"])
 ```
