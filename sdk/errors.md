@@ -2,7 +2,7 @@
 outline: deep
 ---
 
-# SDK 错误处理
+# REST API 错误处理
 
 失败响应统一包含稳定错误码和详情：
 

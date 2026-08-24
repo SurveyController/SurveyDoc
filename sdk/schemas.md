@@ -2,7 +2,7 @@
 outline: deep
 ---
 
-# SDK 数据结构
+# REST API 数据结构
 
 ## RunRequest
 

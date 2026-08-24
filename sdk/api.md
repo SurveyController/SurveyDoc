@@ -2,7 +2,7 @@
 outline: deep
 ---
 
-# SDK 接口说明
+# REST API 接口说明
 
 基础地址为 `http://127.0.0.1:19178`。服务只注册 `/api/v1/*` 路由。
 
@@ -26,9 +26,11 @@ GET /api/v1/version
 
 ```json
 {
-  "version": "1.0.0"
+  "version": "dev"
 }
 ```
+
+版本值由构建参数注入；未注入时为 `dev`。
 
 ## 解析问卷
 

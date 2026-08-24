@@ -2,9 +2,49 @@
 outline: deep
 ---
 
-# SDK 调用示例
+# 调用示例
 
-## JavaScript
+## Go SDK
+
+```go
+package main
+
+import (
+	"context"
+	"errors"
+	"log"
+
+	"github.com/SurveyController/SurveyCore/pkg/surveycore"
+	"github.com/SurveyController/SurveyCore/pkg/surveycore/model"
+)
+
+func main() {
+	ctx := context.Background()
+	client := surveycore.New()
+	cfg, err := client.DefaultConfig(ctx, "https://www.wjx.cn/vm/example.aspx")
+	if err != nil {
+		log.Fatal(err)
+	}
+	cfg.ExecutionPlan.Target = 1
+	cfg.ExecutionPlan.Threads = 1
+	result, err := client.RunWithEvents(ctx, cfg, func(event model.Event) {
+		log.Print(event.Message)
+	})
+	if err != nil {
+		if errors.Is(err, surveycore.ErrInvalidConfig) {
+			log.Fatal("配置无效: ", err)
+		}
+		log.Fatal(err)
+	}
+	log.Printf("成功=%d 失败=%d", result.Success, result.Fail)
+}
+```
+
+仓库中的 `pkg/surveycore/example_test.go` 会编译这些公开调用。
+
+## REST API
+
+### JavaScript
 
 ```js
 const baseURL = "http://127.0.0.1:19178/api/v1";
@@ -44,7 +84,7 @@ async function getTask(taskID) {
 }
 ```
 
-## Python
+### Python
 
 ```python
 import requests
@@ -75,7 +115,7 @@ task = request_json("POST", "/tasks", json=config)
 print(task["id"])
 ```
 
-## 上传二维码
+### 上传二维码
 
 JavaScript：
 
