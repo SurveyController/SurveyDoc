@@ -119,9 +119,23 @@ outline: deep
 |---|---|---|
 | `provider` | `string` | 问卷平台。 |
 | `title` | `string` | 问卷标题。 |
+| `url` | `string` | 解析后的规范化链接；Go 字段名为 `SurveyURL`，手动构造旧快照时可省略。 |
 | `questions` | `QuestionMeta[]` | 题目元数据。 |
 
 `QuestionMeta` 包含题号、题型、选项、分页、必填状态、显示逻辑、跳题逻辑、媒体和平台原始 ID。字段名以 `POST /api/v1/surveys/parse` 返回值为准。
+
+| 字段 | 类型 | 说明 |
+|---|---|---|
+| `num` / `display_num` | `integer` / `integer` 或 null | 原始题号及显示题号。腾讯说明题占用原始编号，说明题的显示编号为空。绑定答案时使用原始题号或平台 ID。 |
+| `provider_type` | `string` | 平台原始题型。问卷星为 `"3"`、`"4"` 等代码，多级下拉为 `"multilevel_dropdown"`。运行层也继续接受旧快照中的 `single`、`multiple` 等名称。默认配置的 `answers.questions[].question_type` 仍使用统一题型。 |
+| `provider_page_raw` | JSON 值 | 腾讯原始 `page`，或问卷星多级下拉的 `cid`、`submit_values`、`level_labels`；没有时为 null。Go 字段为 `any`，复制快照时会深拷贝嵌套元数据。 |
+| `slider_min` / `slider_max` / `slider_step` | `number`、`string` 或 null | 解析时返回数字或 null，也接受旧 Go 快照中的字符串。Go 字段为 `any`。 |
+
+Python `dataclasses.asdict(SurveyDefinition)` 可用于 HTTP 单次提交的 `survey`，或反序列化为 Go 的 `model.SurveyDefinition`。Go 额外保留每题的 `provider`；可选空集合可能省略。问卷星多级下拉按父子关系展开选项，显示文字与提交值分别保存；空的隐藏填空占位不会出现在题目列表中，提交时仍保留空位置。外部数据源及超过六级的层级数据会返回解析错误。
+
+腾讯问卷未解析出明确逻辑时保留 `logic_parse_status: "unknown"`。腾讯量表、矩阵量表等已有不支持范围保持原有解析错误。
+
+问卷星显示条件保留 `raw_relation`，并将 `题号,选项号` 转为从 0 开始的 `condition_option_indices`，同时为来源题目填充 `controls_display_targets`。空条件或 `-1` 不会生成显示约束。
 
 ## SubmissionRequest
 

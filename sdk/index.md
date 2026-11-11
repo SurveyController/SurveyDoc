@@ -18,6 +18,8 @@ go get github.com/SurveyController/SurveyCore@<commit>
 
 `Submit` 使用 `surveycore.SubmissionRequest`，其中 `Config` 是 `*model.RunRequest`，`Survey` 是可选的 `*model.SurveyDefinition`。它固定提交一次并返回 `SubmissionResult`；失败时同时返回可用 `errors.Is` 或 `ClassifySubmissionError` 判断的错误。参数中的目标数、并发数和提交间隔不会触发额外提交。
 
+`Parse` 返回的快照包含规范化链接 `SurveyURL`（JSON `url`）、原始题型、分页与显示题号，可接收 Python 导出的问卷快照。滑块范围支持数字、字符串或 null；问卷星多级下拉包含完整选项路径及提交值。
+
 `RunResults` 返回 `iter.Seq2[SubmissionResult, error]`，按完成顺序产生结果，尝试编号从 1 开始。单次失败保存在结果的 `error` 中，迭代继续；准备失败或调用方取消通过迭代错误返回。提前 `break` 会取消未完成的请求并等待工作线程退出。`Run` 和 `RunWithEvents` 返回汇总，存在失败时在运行结束后返回首个错误；`RunWithEvents` 的 `event.Result` 包含逐次结果。
 
 批量运行以 `target` 为尝试次数，受 `threads` 并发限制，不自动重试。第 2 次起，每次尝试开始前均在并发槽内等待 `submitInterval` 范围内的随机秒数。显式 `failStop`、停止操作或取消可以使运行提前结束。Python v1 配置导入时 `failStop` 为 false。

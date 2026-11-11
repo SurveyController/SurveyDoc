@@ -53,9 +53,14 @@ Content-Type: application/json
 {
   "provider": "wjx",
   "title": "用户满意度调查",
+  "url": "https://www.wjx.cn/vm/example.aspx",
   "questions": []
 }
 ```
+
+解析会补齐链接的协议并统一协议、主机名大小写，保留查询参数；见数短链接转换为 `answer.html#/s/...`。返回的 `url` 是规范化后的链接。Go 继续校验 HTTP/HTTPS、平台域名及问卷路径。
+
+题目中的 `num` 为原始题号，`display_num` 为页面显示题号，二者可能不同。腾讯问卷保留说明题，并将同页说明内容合并到后续作答题；默认配置跳过说明题。问卷星普通题的 `provider_type` 保留平台代码，多级下拉使用 `multilevel_dropdown`。
 
 ## 生成默认配置
 
@@ -135,6 +140,8 @@ Content-Type: application/json
 ```
 
 接口同步执行一次并返回 `SubmissionResult`，不创建持久化任务。目标数和并发数固定为 1，不等待任务提交间隔，不自动重试提交。省略题目策略时自动生成默认策略。耗时包含本次解析、准备和平台请求。
+
+`survey` 接受 Python `dataclasses.asdict()` 导出的问卷快照，包括 `url`、数字或 null 的滑块范围、原始分页字段和多级下拉提交值。题目绑定使用原始题号及平台 ID；传入的配置与快照不会被修改。
 
 ```json
 {

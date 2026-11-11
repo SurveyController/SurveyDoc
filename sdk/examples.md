@@ -57,6 +57,8 @@ if result != nil {
 
 该调用固定执行一次。已有问卷快照可通过 `Survey` 传入。原始 `cfg` 中的目标数和并发数保持原值。
 
+`client.Parse(ctx, url)` 返回的 `definition.SurveyURL` 是规范化链接，JSON 字段为 `url`。数字滑块范围和 `ProviderPageRaw` 保留在快照中；不要用 `DisplayNum` 替代 `Num` 绑定答案。
+
 ### Go 逐次提交结果
 
 ```go
@@ -193,6 +195,8 @@ response.raise_for_status()
 result = response.json()
 print(result["success"], result["elapsed_seconds"], result["error"])
 ```
+
+已有 Python 问卷快照时，可传入 `json={"config": serialize_config(config), "survey": dataclasses.asdict(survey)}`。Go 会保留分页、滑块范围和多级下拉提交值。
 
 ### 上传二维码
 
