@@ -27,7 +27,7 @@ outline: deep
 | `400` | `invalid_query` | 查询参数不是非负整数。 |
 | `404` | `not_found` | 任务不存在。 |
 | `422` | `validation_error` | 单次提交前置参数无效、任务保存失败或二维码内容不是有效问卷链接。 |
-| `500` | `internal_error` | 停止任务或读取日志时发生内部错误。 |
+| `500` | `internal_error` | 停止任务、读取日志或逐次结果时发生内部错误。 |
 | `502` | `upstream_error` | 问卷或官方代理上游请求失败。 |
 
 ## 接口错误速查
@@ -41,6 +41,7 @@ outline: deep
 | `GET /api/v1/tasks/{id}` | `404` |
 | `POST /api/v1/tasks/{id}/stop` | `404`、`500` |
 | `GET /api/v1/tasks/{id}/logs` | `400`、`404`、`500` |
+| `GET /api/v1/tasks/{id}/results` | `400`、`404`、`500` |
 | `POST /api/v1/qrcode/decode` | `400`、`422` |
 | `/api/v1/proxy/*` | `400`、`502` |
 

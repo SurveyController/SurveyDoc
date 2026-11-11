@@ -203,7 +203,9 @@ Content-Type: application/json
 }
 ```
 
-`202` 只代表任务已经创建。
+`202` 代表任务已经创建。任务独立于创建请求运行，响应结束或客户端断开不会取消已创建的任务。使用停止接口取消任务，服务关闭时也会停止运行中的任务。
+
+目标数表示尝试次数，失败保留结果并继续后续尝试，不自动重试。第 2 次起，每次尝试开始前在并发槽内等待配置中的随机提交间隔。显式启用 `execution.failStop` 时，连续失败达到阈值可提前结束。存在单次失败时最终状态为 `failed`，已完成次数见汇总和逐次结果。
 
 ## 查询任务
 
@@ -230,6 +232,8 @@ POST /api/v1/tasks/{id}/stop
 
 返回停止后的 `Task`。已结束的任务保持原状态。
 
+停止操作会取消运行中的平台请求。工作线程退出后更新 `finished_at` 和汇总；取消中的请求不计为失败，也不产生逐次结果。
+
 ## 读取任务日志
 
 ```http
@@ -255,6 +259,29 @@ GET /api/v1/tasks/{id}/logs?after=0&limit=200
   "has_more": false
 }
 ```
+
+## 读取逐次提交结果
+
+```http
+GET /api/v1/tasks/{id}/results?after=0&limit=200
+```
+
+`after` 为非负游标，初次传 0，后续使用上一页的 `next_cursor`。游标使用底层日志 ID，不能用尝试编号推算。`limit` 默认 200，0 使用默认值，超过 1000 按 1000 处理；负数或非法参数返回 `400 invalid_query`，任务不存在返回 `404 not_found`。
+
+```json
+{
+  "results": [
+    {"attempt": 2, "provider": "wjx", "success": true, "elapsed_seconds": 0.8, "error": null},
+    {"attempt": 1, "provider": "wjx", "success": false, "elapsed_seconds": 1.2, "error": "提交失败"}
+  ],
+  "next_cursor": 16,
+  "has_more": false
+}
+```
+
+结果按完成记录顺序返回，`attempt` 从 1 开始，因此并发运行时编号可能乱序。每次失败单独保留 `error`。批量耗时不含公共准备和提交间隔。结果保存在 SQLite 任务日志中，服务重启后仍可读取；升级前未记录的逐次结果不会补生成。
+
+空页返回 `results: []` 并保留请求游标。`has_more` 只表示当前还有已存储结果；任务运行期间为 false 时，可沿用游标继续轮询，并通过任务状态判断是否结束。任务日志接口中的完成事件也包含 `event.result`。
 
 ## 解析二维码
 

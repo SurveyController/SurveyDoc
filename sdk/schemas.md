@@ -50,9 +50,9 @@ outline: deep
 | `source.url` | `string` | 问卷链接。创建任务时不能为空。 |
 | `source.provider` | `string` | `wjx`、`qq` 或 `credamo`。 |
 | `definition` | `SurveyDefinition` | 解析得到的问卷快照。 |
-| `execution.target` | `integer` | 目标提交份数。 |
+| `execution.target` | `integer` | 目标尝试次数，失败占一次，不自动重试。 |
 | `execution.threads` | `integer` | 并发数。 |
-| `execution.submitInterval` | `[integer, integer]` | 每个工作线程两次提交之间的随机等待秒数。 |
+| `execution.submitInterval` | `[integer, integer]` | 第 2 次起，每次尝试开始前在并发槽内随机等待的秒数范围，包括新工作线程的首次提交。 |
 | `execution.answerDuration` | `[integer, integer]` | 作答时长范围，单位秒。 |
 | `execution.answerDatetimeWindow` | `[string, string]` | 可选作答时间窗口。 |
 | `execution.failStop` | `boolean` | 连续失败达到阈值时停止。 |
@@ -140,13 +140,27 @@ outline: deep
 
 | 字段 | 类型 | 说明 |
 |---|---|---|
-| `attempt` | `integer` | 独立 `Submit` 调用固定为 0。 |
+| `attempt` | `integer` | 独立 `Submit` 调用固定为 0；批量运行从 1 开始编号，结果按完成顺序返回。 |
 | `provider` | `string` | `wjx`、`qq` 或 `credamo`。 |
 | `success` | `boolean` | 平台是否确认本次提交成功。 |
-| `elapsed_seconds` | `number` | 本次调用耗时，单位秒，包含解析与准备。 |
+| `elapsed_seconds` | `number` | 单位秒。独立 `Submit` 包含解析与准备；批量结果仅计本次执行耗时，不含公共准备及提交间隔。 |
 | `error` | `string` 或 null | 成功时显式返回 null，失败时返回详情。 |
 
 Go 的 `Submit` 返回 `(result, error)`：缺少配置、链接或平台不兼容时 `result` 为 nil；执行失败时同时返回失败结果和带分类的错误。取消保留 `context.Canceled` 或 `context.DeadlineExceeded`。原始配置及问卷快照不会被修改。
+
+`RunResults` 在单次失败时返回失败结果和 nil 迭代错误，继续后续尝试；准备失败或调用方取消返回迭代错误。取消中的请求及尚未开始的尝试不计入成功数、失败数或逐次结果。
+
+## Event 与 TaskResultPage
+
+`Event` 保留 `worker`、`message`、`success`、`fail`、`current`、`total` 和 `time`。每次尝试完成时，事件额外包含 `result: SubmissionResult`。普通进度事件省略 `result`；获取逐次结果时应筛选该字段。
+
+`GET /api/v1/tasks/{id}/results` 返回：
+
+| 字段 | 类型 | 说明 |
+|---|---|---|
+| `results` | `SubmissionResult[]` | 按完成记录顺序返回，空页为 `[]`。 |
+| `next_cursor` | `integer` | 下次请求的 `after`，空页保留原游标。游标使用底层日志 ID，可能不连续。 |
+| `has_more` | `boolean` | 当前是否还有未返回的已存储结果。任务结束状态由 `Task.status` 判断。 |
 
 ## Task
 
@@ -183,4 +197,4 @@ Go 的 `Submit` 返回 `(result, error)`：缺少配置、链接或平台不兼�
 
 默认目标数和并发数都是 1，作答时长为 `[60, 120]`，间隔为 `[0, 0]`，信效度开关为 true、目标 alpha 为 0.85，随机 User-Agent 默认关闭。Python 序列化格式不包含 `answer_generator` 或题目 `ai_enabled`，导入会拒绝这些字段。
 
-这一兼容入口用于配置导入。任务仍使用 Go 的重试、间隔和结果返回规则；Python 的逐次提交结果接口另行对齐。
+批量运行已对齐 Python 的尝试次数、并发限制、失败后继续、无自动重试、尝试前间隔和按完成顺序返回结果的规则。Go SDK 使用 `RunResults` 迭代，HTTP 使用任务结果分页。

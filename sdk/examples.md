@@ -57,6 +57,26 @@ if result != nil {
 
 该调用固定执行一次。已有问卷快照可通过 `Survey` 传入。原始 `cfg` 中的目标数和并发数保持原值。
 
+### Go 逐次提交结果
+
+```go
+cfg.ExecutionPlan.Target = 3
+cfg.ExecutionPlan.Threads = 2
+cfg.ExecutionPlan.FailStop = false
+for result, err := range client.RunResults(ctx, cfg) {
+    if err != nil {
+        log.Printf("运行结束: %v", err)
+        break
+    }
+    log.Printf("尝试=%d 成功=%t 耗时=%.3f秒", result.Attempt, result.Success, result.ElapsedSeconds)
+    if result.Error != nil {
+        log.Print(*result.Error)
+    }
+}
+```
+
+结果按完成顺序返回。单次失败后继续尝试；准备或上下文错误终止迭代。消费方提前 `break` 时，SDK 会取消未完成请求并等待工作线程退出。
+
 ## REST API
 
 ### JavaScript
@@ -97,7 +117,13 @@ async function createTaskFromURL(url) {
 async function getTask(taskID) {
   return requestJSON(`/tasks/${taskID}`);
 }
+
+async function readTaskResults(taskID, after = 0) {
+  return requestJSON(`/tasks/${taskID}/results?after=${after}&limit=200`);
+}
 ```
+
+将返回的 `next_cursor` 用作下次 `after`。`has_more` 仅表示当前还有已存储的结果；任务仍在运行时，即使它为 false，也应保留游标继续轮询，并结合任务状态判断是否结束。
 
 ### Python
 
