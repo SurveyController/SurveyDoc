@@ -123,6 +123,31 @@ outline: deep
 
 `QuestionMeta` 包含题号、题型、选项、分页、必填状态、显示逻辑、跳题逻辑、媒体和平台原始 ID。字段名以 `POST /api/v1/surveys/parse` 返回值为准。
 
+## SubmissionRequest
+
+单次提交使用 `{ "config": ..., "survey": ... }`。Go SDK 类型为 `surveycore.SubmissionRequest`。
+
+| 字段 | 类型 | 说明 |
+|---|---|---|
+| `config` | `RunRequest` 或 Python v1 配置 | 必填。Go SDK 中为 `*model.RunRequest`，Python 配置可先用 `config.DeserializeRunRequest()` 导入。 |
+| `survey` | `SurveyDefinition` 或 null | 可选问卷快照，覆盖 `config.definition`。省略时使用配置快照或平台解析结果。 |
+
+`surveycore.SubmissionRequest` 是高层 SDK 输入。`model.SubmissionRequest` 仍是实验性的底层平台输入，使用 `Source`、`Definition` 和 `Context`。
+
+## SubmissionResult
+
+字段与 Python `SubmissionResult` 对齐。Go SDK 使用 `surveycore.SubmissionResult`，共享模型位于 `model.SubmissionResult`。
+
+| 字段 | 类型 | 说明 |
+|---|---|---|
+| `attempt` | `integer` | 独立 `Submit` 调用固定为 0。 |
+| `provider` | `string` | `wjx`、`qq` 或 `credamo`。 |
+| `success` | `boolean` | 平台是否确认本次提交成功。 |
+| `elapsed_seconds` | `number` | 本次调用耗时，单位秒，包含解析与准备。 |
+| `error` | `string` 或 null | 成功时显式返回 null，失败时返回详情。 |
+
+Go 的 `Submit` 返回 `(result, error)`：缺少配置、链接或平台不兼容时 `result` 为 nil；执行失败时同时返回失败结果和带分类的错误。取消保留 `context.Canceled` 或 `context.DeadlineExceeded`。原始配置及问卷快照不会被修改。
+
 ## Task
 
 | 字段 | 类型 | 说明 |
@@ -143,7 +168,7 @@ outline: deep
 
 ## Python 配置导入
 
-`POST /api/v1/tasks`、`config.DeserializeRunRequest()` 和 `config.Load()` 接受 `surveycore-py` 的 `serialize_config()` 输出（`schema_version: 1`）。`config.DeserializePythonConfig()` 可先转换为本地 `ConfigDocument`。保存时仍写入 Go 的 v2 格式。
+`POST /api/v1/tasks`、`POST /api/v1/submissions` 的 `config` 字段、`config.DeserializeRunRequest()` 和 `config.Load()` 接受 `surveycore-py` 的 `serialize_config()` 输出（`schema_version: 1`）。`config.DeserializePythonConfig()` 可先转换为本地 `ConfigDocument`。保存时仍写入 Go 的 v2 格式。
 
 | Python 字段 | Go 字段 |
 |---|---|

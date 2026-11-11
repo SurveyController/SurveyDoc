@@ -113,6 +113,41 @@ Content-Type: application/json
 
 完整字段见 [数据结构](./schemas#runrequest)。
 
+## 单次提交
+
+```http
+POST /api/v1/submissions
+Content-Type: application/json
+```
+
+`config` 接受 Go 的 `RunRequest` 或 Python 的 `schema_version: 1` 配置。可选的 `survey` 使用 `/api/v1/surveys/parse` 返回的结构，提供时覆盖配置中的问卷快照，平台必须一致。
+
+```json
+{
+  "config": {
+    "schema_version": 1,
+    "url": "https://www.wjx.cn/vm/example.aspx",
+    "questions": [
+      {"question_type": "single", "probabilities": [0, 1]}
+    ]
+  }
+}
+```
+
+接口同步执行一次并返回 `SubmissionResult`，不创建持久化任务。目标数和并发数固定为 1，不等待任务提交间隔，不自动重试提交。省略题目策略时自动生成默认策略。耗时包含本次解析、准备和平台请求。
+
+```json
+{
+  "attempt": 0,
+  "provider": "wjx",
+  "success": true,
+  "elapsed_seconds": 0.125,
+  "error": null
+}
+```
+
+开始执行后的平台、解析或准备失败返回 `200`，结果为 `success: false`，`error` 包含失败详情。JSON 格式或字段错误返回 `400 invalid_json`；缺少链接、不支持的平台或平台不一致返回 `422 validation_error`。客户端需检查 `success` 判断提交结果。
+
 ## 创建任务
 
 ```http

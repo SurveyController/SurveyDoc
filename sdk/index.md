@@ -14,7 +14,9 @@ go get github.com/SurveyController/SurveyCore@<commit>
 
 `pkg/surveycore` 只负责解析、默认配置和运行。公共结构在 `pkg/surveycore/model`。低层执行、代理和本地配置能力分别在实验性的 `pkg/surveycore/runtime`、`pkg/surveycore/proxy`、`pkg/surveycore/config`。
 
-`Parse`、`DefaultConfig`、`Run` 和 `RunWithEvents` 接受 `context.Context`。取消后不再安排新提交，并等待已开始的平台请求返回。事件回调可能来自工作 goroutine，回调实现必须自行保证并发安全。
+`Parse`、`DefaultConfig`、`Submit`、`Run` 和 `RunWithEvents` 接受 `context.Context`。取消后不再安排新提交，并等待已开始的平台请求返回。事件回调可能来自工作 goroutine，回调实现必须自行保证并发安全。
+
+`Submit` 使用 `surveycore.SubmissionRequest`，其中 `Config` 是 `*model.RunRequest`，`Survey` 是可选的 `*model.SurveyDefinition`。它固定提交一次并返回 `SubmissionResult`；失败时同时返回可用 `errors.Is` 或 `ClassifySubmissionError` 判断的错误。参数中的目标数、并发数和提交间隔不会触发额外提交。
 
 错误可用 `errors.Is` 判断 `ErrInvalidConfig`、`ErrParseFailed`、`ErrPrepareConfigFailed`、`ErrRunFailed` 和 `ErrUnsupportedOperation`，也可用 `ClassifyRunError` 获取稳定分类。
 
@@ -67,6 +69,7 @@ Accept: application/json
 | `GET` | `/api/v1/version` | 读取版本。 |
 | `POST` | `/api/v1/surveys/parse` | 解析问卷。 |
 | `POST` | `/api/v1/configs` | 生成默认运行配置。 |
+| `POST` | `/api/v1/submissions` | 同步提交一次并返回结果。 |
 | `POST` | `/api/v1/tasks` | 创建任务。 |
 | `GET` | `/api/v1/tasks` | 查询任务列表。 |
 | `GET` | `/api/v1/tasks/{id}` | 查询任务。 |

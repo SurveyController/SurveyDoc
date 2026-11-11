@@ -26,7 +26,7 @@ outline: deep
 | `400` | `invalid_request` | multipart 请求无效或缺少文件。 |
 | `400` | `invalid_query` | 查询参数不是非负整数。 |
 | `404` | `not_found` | 任务不存在。 |
-| `422` | `validation_error` | 任务保存失败或二维码内容不是有效问卷链接。 |
+| `422` | `validation_error` | 单次提交前置参数无效、任务保存失败或二维码内容不是有效问卷链接。 |
 | `500` | `internal_error` | 停止任务或读取日志时发生内部错误。 |
 | `502` | `upstream_error` | 问卷或官方代理上游请求失败。 |
 
@@ -36,6 +36,7 @@ outline: deep
 |---|---|
 | `POST /api/v1/surveys/parse` | `400`、`502` |
 | `POST /api/v1/configs` | `400`、`502` |
+| `POST /api/v1/submissions` | `400`、`422`；执行阶段失败通过 `200` 响应中的 `success` 和 `error` 表达。 |
 | `POST /api/v1/tasks` | `400`、`422` |
 | `GET /api/v1/tasks/{id}` | `404` |
 | `POST /api/v1/tasks/{id}/stop` | `404`、`500` |
@@ -49,3 +50,4 @@ outline: deep
 - 二维码上传字段名是 `file`。
 - `202` 不代表提交成功。继续查询任务状态和日志。
 - 任务运行期配置错误会写入任务的 `error` 字段，并把状态改成 `failed`。
+- 单次提交的 `200` 响应需检查 `success`。Go SDK 的单次提交在执行失败时同时返回结果和带分类的错误，可用 `ClassifySubmissionError()` 区分 `config`、`unsupported`、`parse`、`run` 和 `canceled`，或用 `errors.Is` 检查现有公开错误和 context 取消原因。

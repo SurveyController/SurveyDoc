@@ -42,6 +42,21 @@ func main() {
 
 仓库中的 `pkg/surveycore/example_test.go` 会编译这些公开调用。
 
+### Go 单次提交
+
+```go
+client := surveycore.New()
+result, err := client.Submit(ctx, &surveycore.SubmissionRequest{Config: cfg})
+if err != nil {
+    log.Printf("提交错误类别=%s: %v", surveycore.ClassifySubmissionError(err), err)
+}
+if result != nil {
+    log.Printf("成功=%t 耗时=%.3f秒", result.Success, result.ElapsedSeconds)
+}
+```
+
+该调用固定执行一次。已有问卷快照可通过 `Survey` 传入。原始 `cfg` 中的目标数和并发数保持原值。
+
 ## REST API
 
 ### JavaScript
@@ -134,6 +149,23 @@ response = httpx.post(
 )
 response.raise_for_status()
 print(response.json()["id"])
+```
+
+### 使用 surveycore-py 配置单次提交
+
+```python
+import httpx
+from surveycore import RunConfig, serialize_config
+
+config = RunConfig(url="https://www.wjx.cn/vm/example.aspx")
+response = httpx.post(
+    "http://127.0.0.1:19178/api/v1/submissions",
+    json={"config": serialize_config(config)},
+    timeout=120,
+)
+response.raise_for_status()
+result = response.json()
+print(result["success"], result["elapsed_seconds"], result["error"])
 ```
 
 ### 上传二维码
