@@ -62,6 +62,7 @@ outline: deep
 | `answers.questions` | `QuestionStrategy[]` | 每道题的答案策略。 |
 | `reverseFill` | `ReverseFillPlan` | Excel 反填配置。 |
 | `psychometrics` | `PsychometricPolicy` | 信效度配置。 |
+| `userAgent` | `object` | 可选随机 User-Agent 配置，包含 `enabled` 和 `ratios`（`wechat`、`mobile`、`pc` 权重）。 |
 
 ## QuestionStrategy
 
@@ -139,3 +140,22 @@ outline: deep
 ## 本地配置文件
 
 `configs/example.json` 使用 `schemaVersion: 2` 的 `ConfigDocument`。它包含 `survey`、`execution`、`network`、`answers`、`reverseFill` 和 `psychometrics` 六个区段。该文件格式与 REST `RunRequest` 不是同一个 JSON 外壳。
+
+## Python 配置导入
+
+`POST /api/v1/tasks`、`config.DeserializeRunRequest()` 和 `config.Load()` 接受 `surveycore-py` 的 `serialize_config()` 输出（`schema_version: 1`）。`config.DeserializePythonConfig()` 可先转换为本地 `ConfigDocument`。保存时仍写入 Go 的 v2 格式。
+
+| Python 字段 | Go 字段 |
+|---|---|
+| `url` / `provider` | `source.url` / `source.provider`；省略或为 null 的 provider 由运行层识别。 |
+| `target` / `concurrency` | `execution.target` / `execution.threads`。 |
+| `answer_duration` / `submit_interval` / `answer_datetime_window` | 对应 `execution` 中的三个时间范围；保留原始范围，包括 `[0, 0]`。 |
+| `questions` / `answer_rules` | `answers.questions` / `answers.rules`；省略或为 null 的题号按配置顺序从 1 编号。 |
+| `random_user_agent` / `user_agent_ratios` | `userAgent.enabled` / `userAgent.ratios`，本地 v2 文件保存在 `network`。 |
+| `reliability_mode` / `target_alpha` | `psychometrics.enabled` / `psychometrics.targetAlpha`。 |
+
+题目中的 `probabilities` 和 `custom_weights` 接受 Python 的数字、数组、矩阵数组或 null，转换为 Go 的 `WeightTable`。选择题的 null 或 `-1` 表示随机；多选权重保留 0–100 数值。支持其余 Go 已有的题目策略字段，并拒绝未知字段。
+
+默认目标数和并发数都是 1，作答时长为 `[60, 120]`，间隔为 `[0, 0]`，信效度开关为 true、目标 alpha 为 0.85，随机 User-Agent 默认关闭。Python 序列化格式不包含 `answer_generator` 或题目 `ai_enabled`，导入会拒绝这些字段。
+
+这一兼容入口用于配置导入。任务仍使用 Go 的重试、间隔和结果返回规则；Python 的逐次提交结果接口另行对齐。

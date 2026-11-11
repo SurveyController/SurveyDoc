@@ -115,6 +115,27 @@ task = request_json("POST", "/tasks", json=config)
 print(task["id"])
 ```
 
+### 使用 surveycore-py 配置创建任务
+
+```python
+import httpx
+from surveycore import QuestionConfig, RunConfig, serialize_config
+
+config = RunConfig(
+    url="https://www.wjx.cn/vm/example.aspx",
+    target=3,
+    concurrency=2,
+    questions=[QuestionConfig(question_type="single", probabilities=[0, 1])],
+)
+response = httpx.post(
+    "http://127.0.0.1:19178/api/v1/tasks",
+    json=serialize_config(config),
+    timeout=30,
+)
+response.raise_for_status()
+print(response.json()["id"])
+```
+
 ### 上传二维码
 
 JavaScript：

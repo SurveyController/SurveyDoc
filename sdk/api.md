@@ -120,7 +120,9 @@ POST /api/v1/tasks
 Content-Type: application/json
 ```
 
-请求体必须使用 `RunRequest` 的嵌套结构。建议先获取默认配置，再修改目标数和并发数：
+请求体接受 `RunRequest` 的嵌套结构，或 `surveycore-py` 导出的 `schema_version: 1` 配置。Python 配置会转换为 `RunRequest` 后创建任务，任务响应中的 `config` 使用 Go 的嵌套结构。字段映射见 [Python 配置导入](./schemas#python-配置导入)。
+
+使用嵌套结构时，建议先获取默认配置，再修改目标数和并发数：
 
 ```json
 {

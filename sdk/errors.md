@@ -45,7 +45,7 @@ outline: deep
 
 ## 注意事项
 
-- JSON 接口会拒绝未知字段。V1 任务请求必须使用 `source`、`definition`、`execution`、`answers`、`reverseFill` 和 `psychometrics` 结构。
+- JSON 接口会拒绝未知字段。V1 任务请求接受嵌套的 `RunRequest` 或 `schema_version: 1` 的 Python 配置；两种格式不能混用。Python 配置版本、字段类型、范围或权重无效时返回 `400 invalid_json`。
 - 二维码上传字段名是 `file`。
 - `202` 不代表提交成功。继续查询任务状态和日志。
 - 任务运行期配置错误会写入任务的 `error` 字段，并把状态改成 `failed`。
