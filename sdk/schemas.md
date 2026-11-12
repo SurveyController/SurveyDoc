@@ -133,7 +133,7 @@ outline: deep
 
 Python `dataclasses.asdict(SurveyDefinition)` 可用于 HTTP 单次提交的 `survey`，或反序列化为 Go 的 `model.SurveyDefinition`。Go 额外保留每题的 `provider`；可选空集合可能省略。问卷星多级下拉按父子关系展开选项，显示文字与提交值分别保存；空的隐藏填空占位不会出现在题目列表中，提交时仍保留空位置。外部数据源及超过六级的层级数据会返回解析错误。
 
-腾讯问卷未解析出明确逻辑时保留 `logic_parse_status: "unknown"`。腾讯量表、矩阵量表等已有不支持范围保持原有解析错误。
+腾讯问卷未解析出明确逻辑时保留 `logic_parse_status: "unknown"`。支持 NPS（`nps`）、星级评分（`star`）和矩阵评分（`matrix_star`）。分数由 `star_begin_num` 与 `star_num` 生成，省略起点时 NPS 从 0 开始、星级及矩阵评分从 1 开始。默认策略中前两种使用 `score`，矩阵评分使用 `matrix`；提交时保留真实分值，0 分有效。空的显示条件及 `hidden: false` 不会阻止提交。
 
 问卷星显示条件保留 `raw_relation`，并将 `题号,选项号` 转为从 0 开始的 `condition_option_indices`，同时为来源题目填充 `controls_display_targets`。空条件或 `-1` 不会生成显示约束。
 
